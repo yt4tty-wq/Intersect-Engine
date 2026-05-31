@@ -2486,10 +2486,16 @@ public partial class Entity : IEntity
                         en.Value.Y == tmpY &&
                         en.Value.Z == Z)
                     {
-                        if (en.Value is not Projectile)
-                        {
-                            switch (en.Value)
-                            {
+                       if (en.Value is not Projectile)
+{
+    // เดินทะลุ NPC ได้
+    if (en.Value.Type == EntityType.GlobalEntity)
+    {
+        continue;
+    }
+
+    switch (en.Value)
+    {
                                 case Resource resource:
                                     var resourceDescriptor = resource.Descriptor;
                                     if (resourceDescriptor == null)
