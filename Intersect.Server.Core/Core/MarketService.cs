@@ -1,78 +1,79 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Intersect.Server.Core;
 
 public static class MarketService
 {
-    public static List<MarketItem> Listings { get; } = new();
+    private static readonly object _lock = new();
 
-    public static void AddTestItem()
+    private static readonly List<MarketItem> _listings = new();
+
+    public static IReadOnlyList<MarketItem> Listings
     {
-        AddListing(new MarketItem()
+        get
         {
-            SellerId = Guid.Empty,
-            ItemId = Guid.Empty,
-            Quantity = 1,
-            Price = 1000
-        });
+            lock (_lock)
+                return _listings.ToList();
+        }
     }
 
-    public static void AddListing(MarketItem item)
+    // CREATE LISTING (MAIN ENTRY)
+    public static bool CreateListing(Guid sellerId, Guid itemId, int quantity, long price)
     {
-        Listings.Add(item);
+        if (quantity <= 0 || price <= 0)
+            return false;
 
-        Console.WriteLine($"[MARKET] Added. Total: {Listings.Count}");
-    }
-
-    public static List<MarketItem> GetListings()
-    {
-        return Listings;
-    }
-
-    public static void RemoveListing(MarketItem item)
-    {
-        Listings.Remove(item);
-
-        Console.WriteLine($"[MARKET] Removed. Total: {Listings.Count}");
-    }
-
-    public static bool CreateListing(
-        Guid sellerId,
-        Guid itemId,
-        int quantity,
-        long price
-    )
-    {
-        AddListing(new MarketItem()
+        lock (_lock)
         {
-            SellerId = sellerId,
-            ItemId = itemId,
-            Quantity = quantity,
-            Price = price
-        });
+            var item = new MarketItem
+            {
+                ListingId = Guid.NewGuid(),
+                SellerId = sellerId,
+                ItemId = itemId,
+                Quantity = quantity,
+                Price = price
+            };
 
-        return true;
+            _listings.Add(item);
+            return true;
+        }
     }
 
     public static MarketItem? FindListing(Guid listingId)
     {
-        return Listings.Find(x => x.ListingId == listingId);
+        lock (_lock)
+        {
+            return _listings.FirstOrDefault(x => x.ListingId == listingId);
+        }
     }
 
     public static bool RemoveListing(Guid listingId)
     {
-        var listing = FindListing(listingId);
-
-        if (listing == null)
+        lock (_lock)
         {
-            return false;
+            var item = _listings.FirstOrDefault(x => x.ListingId == listingId);
+
+            if (item == null)
+                return false;
+
+            _listings.Remove(item);
+            return true;
         }
+    }
 
-        Listings.Remove(listing);
+    public static bool TryGetAndRemove(Guid listingId, out MarketItem? item)
+    {
+        lock (_lock)
+        {
+            item = _listings.FirstOrDefault(x => x.ListingId == listingId);
 
-        Console.WriteLine($"[MARKET] Removed Listing {listingId}");
+            if (item == null)
+                return false;
 
-        return true;
+            _listings.Remove(item);
+            return true;
+        }
     }
 }
