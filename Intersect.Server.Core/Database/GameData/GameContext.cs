@@ -32,6 +32,8 @@ public abstract partial class GameContext : IntersectDbContext<GameContext>, IGa
 
     public DbSet<CraftingTableDescriptor> CraftingTables { get; set; }
 
+    public DbSet<AuctionListing> AuctionListings { get; set; }
+    
     //Classes
     public DbSet<ClassDescriptor> Classes { get; set; }
 
