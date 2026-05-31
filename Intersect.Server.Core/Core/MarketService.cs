@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-
-namespace Intersect.Server.Core;
-
 public static class MarketService
 {
     public static List<MarketItem> Listings { get; } = new();
@@ -35,5 +30,24 @@ public static class MarketService
         Listings.Remove(item);
 
         Console.WriteLine($"[MARKET] Removed. Total: {Listings.Count}");
+    }
+
+    // เพิ่มตรงนี้
+    public static bool CreateListing(
+        Guid sellerId,
+        Guid itemId,
+        int quantity,
+        long price
+    )
+    {
+        AddListing(new MarketItem()
+        {
+            SellerId = sellerId,
+            ItemId = itemId,
+            Quantity = quantity,
+            Price = price
+        });
+
+        return true;
     }
 }
