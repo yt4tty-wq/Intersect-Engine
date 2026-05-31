@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Intersect.Server.Database;
+namespace Intersect.Server.Database.GameData;
 
 public class AuctionListing
 {
