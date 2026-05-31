@@ -64,20 +64,22 @@ internal partial class ServerContext : ApplicationContext<ServerContext, ServerC
 
     #region Startup
 
-    protected override void InternalStart()
+   protected override void InternalStart()
+{
+    try
     {
-        try
-        {
-            InternalStartNetworking();
-        }
-        catch (Exception exception)
-        {
-            ApplicationContext.Context.Value?.Logger.LogError(exception, "Failed to start networking");
-            Dispose();
+        MarketService.AddTestItem();
 
-            throw;
-        }
+        InternalStartNetworking();
     }
+    catch (Exception exception)
+    {
+        ApplicationContext.Context.Value?.Logger.LogError(exception, "Failed to start networking");
+        Dispose();
+
+        throw;
+    }
+}
 
     #endregion
 
