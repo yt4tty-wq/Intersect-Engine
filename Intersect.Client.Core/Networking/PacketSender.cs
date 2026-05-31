@@ -62,7 +62,23 @@ public static partial class PacketSender
         {
             return;
         }
-
+public static void SendMarketSell(Guid itemId, int quantity, long price)
+{
+    Network.SendPacket(new MarketSellPacket
+    {
+        ItemId = itemId,
+        Quantity = quantity,
+        Price = price
+    });
+}
+        public static void SendMarketBuy(Guid listingId)
+    {
+        SendPacket(new MarketBuyPacket
+        {
+            ListingId = listingId
+        });
+    }
+}
         Network.SendPacket(
             new GetObjectData<MapDescriptor>(
                 validMapIds.Select(id => new ObjectCacheKey<MapDescriptor>(new Id<MapDescriptor>(id))).ToArray()
