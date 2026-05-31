@@ -32,6 +32,7 @@ using LoginPacket = Intersect.Network.Packets.Client.LoginPacket;
 using PartyInvitePacket = Intersect.Network.Packets.Client.PartyInvitePacket;
 using PingPacket = Intersect.Network.Packets.Client.PingPacket;
 using TradeRequestPacket = Intersect.Network.Packets.Client.TradeRequestPacket;
+using Intersect.Server.Core.Net.Packets;
 
 namespace Intersect.Server.Networking;
 
@@ -2806,7 +2807,30 @@ internal sealed partial class PacketHandler
             PacketSender.SendChatMsg(player, Strings.Guilds.NotInGuild, ChatMessageType.Guild, CustomColors.Alerts.Error);
             return;
         }
+// ---- MARKET HANDLER (ใส่ตรงนี้) ----
+private void HandleMarketSellPacket(Client client, MarketSellPacket packet)
+{
+    if (client?.Entity == null)
+        return;
 
+    MarketSellService.TrySellItem(
+        client.Entity.Id,
+        packet.ItemId,
+        packet.Quantity,
+        packet.Price
+    );
+}
+
+private void HandleMarketBuyPacket(Client client, MarketBuyPacket packet)
+{
+    if (client?.Entity == null)
+        return;
+
+    MarketBuyService.TryBuyItem(
+        client.Entity.Id,
+        packet.ListingId
+    );
+}
         var isOwner = player.GuildRank == 0;
         var rank = Options.Instance.Guild.Ranks[Math.Max(0, Math.Min(player.GuildRank, Options.Instance.Guild.Ranks.Length - 1))];
         Intersect.Network.Packets.Server.GuildMember member = null;
