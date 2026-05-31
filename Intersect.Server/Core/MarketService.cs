@@ -7,7 +7,7 @@ public static class MarketService
 {
     public static List<MarketItem> Listings { get; } = new();
 
-    static MarketService()
+    public static void AddTestItem()
     {
         Listings.Add(new MarketItem()
         {
@@ -16,5 +16,7 @@ public static class MarketService
             Quantity = 1,
             Price = 1000
         });
+
+        Console.WriteLine($"Market Items: {Listings.Count}");
     }
 }
