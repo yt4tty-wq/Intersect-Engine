@@ -39,6 +39,7 @@ namespace Intersect.Server.Core
                 Parser.Register<KillCommand>();
                 Parser.Register<ListVariablesCommand>();
                 Parser.Register<MetricsCommand>();
+                Parser.Register<MarketTestCommand>();
                 Parser.Register<MakePrivateCommand>();
                 Parser.Register<MakePublicCommand>();
                 Parser.Register<MigrateCommand>();
