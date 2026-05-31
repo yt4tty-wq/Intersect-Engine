@@ -9,14 +9,31 @@ public static class MarketService
 
     public static void AddTestItem()
     {
-        Listings.Add(new MarketItem()
+        AddListing(new MarketItem()
         {
             SellerId = Guid.Empty,
             ItemId = Guid.Empty,
             Quantity = 1,
             Price = 1000
         });
+    }
 
-        Console.WriteLine($"Market Items: {Listings.Count}");
+    public static void AddListing(MarketItem item)
+    {
+        Listings.Add(item);
+
+        Console.WriteLine($"[MARKET] Added. Total: {Listings.Count}");
+    }
+
+    public static List<MarketItem> GetListings()
+    {
+        return Listings;
+    }
+
+    public static void RemoveListing(MarketItem item)
+    {
+        Listings.Remove(item);
+
+        Console.WriteLine($"[MARKET] Removed. Total: {Listings.Count}");
     }
 }
