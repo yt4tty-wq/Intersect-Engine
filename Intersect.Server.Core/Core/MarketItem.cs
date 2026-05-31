@@ -1,25 +1,16 @@
-public static void RemoveListing(MarketItem item)
+using System;
+
+namespace Intersect.Server.Core;
+
+public class MarketItem
 {
-    Listings.Remove(item);
+    public Guid ListingId { get; set; } = Guid.NewGuid();
 
-    Console.WriteLine($"[MARKET] Removed. Total: {Listings.Count}");
-}
+    public Guid SellerId { get; set; }
 
-public static bool CreateListing(
-    Guid sellerId,
-    Guid itemId,
-    int quantity,
-    long price
-)
-{
-    AddListing(new MarketItem()
-    {
-        SellerId = sellerId,
-        ItemId = itemId,
-        Quantity = quantity,
-        Price = price
-    });
+    public Guid ItemId { get; set; }
 
-    return true;
-}
+    public int Quantity { get; set; }
+
+    public long Price { get; set; }
 }
