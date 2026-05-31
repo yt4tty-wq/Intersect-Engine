@@ -54,4 +54,25 @@ public static class MarketService
 
         return true;
     }
+
+    public static MarketItem? FindListing(Guid listingId)
+    {
+        return Listings.Find(x => x.ListingId == listingId);
+    }
+
+    public static bool RemoveListing(Guid listingId)
+    {
+        var listing = FindListing(listingId);
+
+        if (listing == null)
+        {
+            return false;
+        }
+
+        Listings.Remove(listing);
+
+        Console.WriteLine($"[MARKET] Removed Listing {listingId}");
+
+        return true;
+    }
 }
