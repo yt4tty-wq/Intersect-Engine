@@ -583,29 +583,29 @@ public abstract partial class Entity : IEntity
         }
 
         foreach (var mapEntity in mapEntities.Where(en => en.X == tileHelper.GetX() && en.Y == tileHelper.GetY() && en.Z == Z))
-        {
-            // Set a target if a projectile
-            CollisionIndex = mapEntity.Id;
-            switch (mapEntity)
-            {
-                case Player _ when !CanPassPlayer(mapController):
-                    blockerType = MovementBlockerType.Entity;
-                    entityType = EntityType.Player;
-                    blockingEntity = mapEntity;
-                    return false;
-                case Npc _:
-                    // There should honestly be an Npc EntityType...
-                    blockerType = MovementBlockerType.Entity;
-                    entityType = EntityType.Player;
-                    blockingEntity = mapEntity;
-                    return false;
-                case Resource resource when !resource.IsPassable():
-                    blockerType = MovementBlockerType.Entity;
-                    entityType = EntityType.Resource;
-                    blockingEntity = mapEntity;
-                    return false;
-            }
-        }
+{
+    // Set a target if a projectile
+    CollisionIndex = mapEntity.Id;
+
+    switch (mapEntity)
+    {
+        case Player _ when !CanPassPlayer(mapController):
+            blockerType = MovementBlockerType.Entity;
+            entityType = EntityType.Player;
+            blockingEntity = mapEntity;
+            return false;
+
+        case Npc _:
+            // Allow players to walk through NPCs/Monsters
+            continue;
+
+        case Resource resource when !resource.IsPassable():
+            blockerType = MovementBlockerType.Entity;
+            entityType = EntityType.Resource;
+            blockingEntity = mapEntity;
+            return false;
+    }
+}
 
         if (IsBlockedByEvent(mapInstance, tileHelper.GetX(), tileHelper.GetY(), out var blockingEvent))
         {
