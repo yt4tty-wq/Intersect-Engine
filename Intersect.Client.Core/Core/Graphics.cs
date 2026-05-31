@@ -558,7 +558,7 @@ public static partial class Graphics
 
         var gameState = Globals.GameState;
 
-        renderer.Scale = gameState == GameStates.InGame ? Globals.Database.WorldZoom : 1.0f;
+        renderer.Scale = gameState == GameStates.InGame ? 2f : 1.0f;
 
         if (!renderer.Begin())
         {
