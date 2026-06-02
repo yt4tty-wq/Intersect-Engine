@@ -10,7 +10,7 @@ using Intersect.Utilities;
 using Newtonsoft.Json;
 
 namespace Intersect.Framework.Core.GameObjects.NPCs;
-
+public bool Passable { get; set; } = false;
 public partial class NPCDescriptor : DatabaseObject<NPCDescriptor>, IFolderable
 {
     private long[] _maxVitals = new long[Enum.GetValues<Vital>().Length];
