@@ -10,12 +10,15 @@ using Intersect.Utilities;
 using Newtonsoft.Json;
 
 namespace Intersect.Framework.Core.GameObjects.NPCs;
-public bool Passable { get; set; } = false;
+
 public partial class NPCDescriptor : DatabaseObject<NPCDescriptor>, IFolderable
 {
     private long[] _maxVitals = new long[Enum.GetValues<Vital>().Length];
     private int[] _stats = new int[Enum.GetValues<Stat>().Length];
     private long[] _vitalRegen = new long[Enum.GetValues<Vital>().Length];
+
+    // --- ย้ายมาอยู่ตรงนี้ (ข้างใน Class) เพื่อแก้ Error CS0116 เรียบร้อยครับ ---
+    public bool Passable { get; set; } = false;
 
     [NotMapped]
     public ConditionLists AttackOnSightConditions { get; set; } = new();
