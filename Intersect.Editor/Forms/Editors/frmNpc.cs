@@ -42,9 +42,12 @@ public partial class FrmNpc : EditorForm
         lstGameObjects.Init(UpdateToolStripItems, AssignEditorItem, toolStripItemNew_Click, toolStripItemCopy_Click, toolStripItemUndo_Click, toolStripItemPaste_Click, toolStripItemDelete_Click);
     }
     private void AssignEditorItem(Guid id)
-    {
-        mEditorItem = NPCDescriptor.Get(id);
-        UpdateEditor();
+{
+    mEditorItem = NPCDescriptor.Get(id);
+    if (mEditorItem == null) return;
+
+    // --- เพิ่มบรรทัดนี้ ---
+    chkPassable.Checked = mEditorItem.Passable;
     }
 
     protected override void GameObjectUpdatedDelegate(GameObjectType type)
