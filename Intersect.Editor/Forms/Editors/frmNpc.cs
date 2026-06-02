@@ -21,6 +21,7 @@ namespace Intersect.Editor.Forms.Editors;
 public partial class FrmNpc : EditorForm
 {
 
+    private DarkUI.Controls.DarkCheckBox chkPassable;
     private List<NPCDescriptor> mChanged = [];
 
     private string mCopiedItem;
@@ -39,6 +40,15 @@ public partial class FrmNpc : EditorForm
         _btnSave = btnSave;
         _btnCancel = btnCancel;
 
+        // --- เพิ่มโค้ดชุดนี้เพื่อสร้างตัว Checkbox และจัดตำแหน่งบนหน้าจอ ---
+        chkPassable = new DarkUI.Controls.DarkCheckBox();
+        chkPassable.Text = "Passable (ทะลุได้)";
+        chkPassable.Location = new System.Drawing.Point(250, 40); // พิกัด X, Y บนหน้าจอ
+        chkPassable.Size = new System.Drawing.Size(150, 20);      // ขนาดความกว้าง, สูง
+        chkPassable.CheckedChanged += chkPassable_CheckedChanged;
+        this.Controls.Add(chkPassable); // สั่งให้นำไปแปะบนหน้าต่างโปรแกรม
+        chkPassable.BringToFront();     // เอามาไว้เลเยอร์บนสุดไม่ให้โดนพื้นหลังทับ
+        //
         lstGameObjects.Init(UpdateToolStripItems, AssignEditorItem, toolStripItemNew_Click, toolStripItemCopy_Click, toolStripItemUndo_Click, toolStripItemPaste_Click, toolStripItemDelete_Click);
     }
      private void AssignEditorItem(Guid id)
