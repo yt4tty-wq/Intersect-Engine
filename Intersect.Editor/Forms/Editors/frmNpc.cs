@@ -54,9 +54,14 @@ public partial class FrmNpc : EditorForm
      private void AssignEditorItem(Guid id)
     {
         mEditorItem = NPCDescriptor.Get(id);
-        UpdateEditor();
-    }
+        if (mEditorItem == null) return;
 
+        // --- เพิ่มบรรทัดนี้เพื่อให้ช่องติ๊กแสดงสถานะตามจริงจากฐานข้อมูล ---
+        if (chkPassable != null)
+        {
+            chkPassable.Checked = mEditorItem.Passable;
+        }
+ }
     protected override void GameObjectUpdatedDelegate(GameObjectType type)
     {
         if (type == GameObjectType.Npc)
@@ -1128,5 +1133,11 @@ public partial class FrmNpc : EditorForm
     private void nudTenacity_ValueChanged(object sender, EventArgs e)
     {
         mEditorItem.Tenacity = (double)nudTenacity.Value;
+    }
+    private void chkPassable_CheckedChanged(object sender, EventArgs e)
+    {
+        if (mEditorItem == null) return;
+        
+        mEditorItem.Passable = chkPassable.Checked;
     }
 }
