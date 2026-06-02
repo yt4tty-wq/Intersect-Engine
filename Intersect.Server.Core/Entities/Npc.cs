@@ -113,6 +113,7 @@ public partial class Npc : Entity
         Name = npcDescriptor.Name;
         Sprite = npcDescriptor.Sprite;
         Color = npcDescriptor.Color;
+        Passable = npcDescriptor.Passable;
         Level = npcDescriptor.Level;
         Immunities = npcDescriptor.Immunities;
         Descriptor = npcDescriptor;
